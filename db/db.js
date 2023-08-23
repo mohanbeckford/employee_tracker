@@ -5,8 +5,8 @@ const mysql = require('mysql2');
 // Create a connection pool with Promises support
 const pool = mysql.createPool({
   host: 'localhost',        //  MySQL host
-  user: 'mohan',     // MySQL username
-  password: 'Beeswasp', //  MySQL password
+  user: 'root',     // MySQL username
+  password: 'Beeswasp2001@', //  MySQL password
   database: 'employee_db',  // database name
   waitForConnections: true,
   connectionLimit: 10,
