@@ -1,7 +1,7 @@
 -- Drop the database if it exists
 DROP DATABASE IF EXISTS employee_db;
 
--- Create the database
+-- -- Create the database
 CREATE DATABASE employee_db;
 
 -- Use the database
