@@ -29,4 +29,4 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 ## Mock-Up Video 
 
-![The below link is a screenshot of the application](./Screentshot.png)
+![The below link is a screenshot of the application](https://storyxpress.co/video/llqzyiuiw0otng7co)
