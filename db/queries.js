@@ -1,5 +1,3 @@
-
-
 const db = require('./db'); 
 
 // Function to view all departments
@@ -86,7 +84,21 @@ async function updateEmployeeRole(employeeId, roleId) {
     );
     return result.affectedRows > 0;
   } catch (error) {
-    console.error('Error updating database:', error);
+    console.error('Error updating employee role:', error);
+    throw error;
+  }
+}
+
+// Function to update an employee's manager
+async function updateEmployeeManager(employeeId, newManagerId) {
+  try {
+    const [result] = await db.execute(
+      'UPDATE employee SET manager_id = ? WHERE id = ?',
+      [newManagerId, employeeId]
+    );
+    return result.affectedRows > 0;
+  } catch (error) {
+    console.error('Error updating employee manager:', error);
     throw error;
   }
 }
@@ -98,5 +110,6 @@ module.exports = {
   addDepartment,
   addRole,
   addEmployee,
-  updateEmployeeRole
+  updateEmployeeRole,
+  updateEmployeeManager
 };

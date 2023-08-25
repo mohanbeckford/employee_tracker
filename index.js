@@ -1,4 +1,3 @@
-
 const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 const {
@@ -16,7 +15,7 @@ const {
   deleteRole,
   deleteEmployee,
   calculateTotalBudget
-} = require('./db/queries'); 
+} = require('./db/queries');
 
 async function mainMenu() {
   const choices = [
@@ -65,6 +64,92 @@ async function mainMenu() {
       });
       await addDepartment(departmentName.name);
       console.log('Department added successfully!');
+      break;
+    case 'Add a role':
+      const roleData = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'title',
+          message: 'Enter the title of the role:'
+        },
+        {
+          type: 'input',
+          name: 'salary',
+          message: 'Enter the salary for the role:'
+        },
+        {
+          type: 'input',
+          name: 'departmentId',
+          message: 'Enter the department ID for the role:'
+        }
+      ]);
+      const roleId = await addRole(roleData.title, roleData.salary, roleData.departmentId);
+      console.log('Role added successfully with ID:', roleId);
+      break;
+    case 'Add an employee':
+      const employeeData = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'firstName',
+          message: 'Enter the first name of the employee:'
+        },
+        {
+          type: 'input',
+          name: 'lastName',
+          message: 'Enter the last name of the employee:'
+        },
+        {
+          type: 'input',
+          name: 'roleId',
+          message: 'Enter the role ID of the employee:'
+        }
+        // {
+        //   type: 'input',
+        //   name: 'managerId',
+        //   message: 'Enter the manager ID of the employee:'
+        // }
+      ]);
+
+
+      try {
+        // Call the addEmployee function with the provided data
+        await addEmployee(employeeData.firstName, employeeData.lastName, employeeData.roleId);
+        console.log('Employee added successfully!');
+      } catch (error) {
+        console.error('Error adding employee:', error);
+      }
+      break;
+
+
+      const employeeId = await addEmployee(
+        employeeData.firstName,
+        employeeData.lastName,
+        employeeData.roleId
+      );
+      console.log('Employee added successfully with ID:', employeeId);
+      break;
+    case 'Update an employee role':
+      const employeeRoleData = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'employeeId',
+          message: 'Enter the ID of the employee to update:'
+        },
+        {
+          type: 'input',
+          name: 'newRoleId',
+          message: 'Enter the ID of the new role:'
+        }
+      ]);
+      const updateRoleResult = await updateEmployeeRole(
+        employeeRoleData.employeeId,
+        employeeRoleData.newRoleId
+      );
+      if (updateRoleResult) {
+        console.log('Employee role updated successfully!');
+      } else {
+        console.log('Failed to update employee role.');
+      }
       break;
     case 'Update an employee manager':
       const employeeManagerData = await inquirer.prompt([
