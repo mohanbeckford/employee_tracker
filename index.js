@@ -103,11 +103,7 @@ async function mainMenu() {
           name: 'roleId',
           message: 'Enter the role ID of the employee:'
         }
-        // {
-        //   type: 'input',
-        //   name: 'managerId',
-        //   message: 'Enter the manager ID of the employee:'
-        // }
+       
       ]);
 
 
@@ -124,7 +120,8 @@ async function mainMenu() {
       const employeeId = await addEmployee(
         employeeData.firstName,
         employeeData.lastName,
-        employeeData.roleId
+        employeeData.roleId,
+        null
       );
       console.log('Employee added successfully with ID:', employeeId);
       break;
@@ -187,6 +184,7 @@ async function mainMenu() {
         console.log('No employees found for this manager.');
       }
       break;
+
     case 'View employees by department':
       const departmentId = await inquirer.prompt({
         type: 'input',
@@ -200,6 +198,26 @@ async function mainMenu() {
         console.log('No employees found in this department.');
       }
       break;
+
+      //VIEW EMPLOYEES BY MNAGER
+      case 'View employees by manager':
+  const managerIdInput = await inquirer.prompt({
+    type: 'input',
+    name: 'managerId',
+    message: 'Enter the ID of the manager:'
+  });
+  const employeesByManagerResult = await viewEmployeesByManager(managerIdInput.managerId);
+  if (employeesByManagerResult.length > 0) {
+    console.table('Employees by Manager:', employeesByManagerResult);
+  } else {
+    console.log('No employees found for this manager.');
+  }
+  break;
+
+      
+
+//DELETE A DEPARTMENT
+
     case 'Delete a department':
       const deleteDepartmentId = await inquirer.prompt({
         type: 'input',
@@ -213,6 +231,10 @@ async function mainMenu() {
         console.log('Failed to delete department.');
       }
       break;
+
+      
+      //DELETE  ROLE
+
     case 'Delete a role':
       const deleteRoleId = await inquirer.prompt({
         type: 'input',
@@ -226,6 +248,9 @@ async function mainMenu() {
         console.log('Failed to delete role.');
       }
       break;
+
+// DELETE AN EMPLOYEE
+
     case 'Delete an employee':
       const deleteEmployeeId = await inquirer.prompt({
         type: 'input',
@@ -239,6 +264,25 @@ async function mainMenu() {
         console.log('Failed to delete employee.');
       }
       break;
+
+//VIEW EMPLOYEES BY DEPARTMENT
+case 'View employees by department':
+  const departmentIdInput = await inquirer.prompt({
+    type: 'input',
+    name: 'departmentId',
+    message: 'Enter the ID of the department:'
+  });
+  const employeesByDepartmentResult = await viewEmployeesByDepartment(departmentIdInput.departmentId);
+  if (employeesByDepartmentResult.length > 0) {
+    console.table('Employees by Department:', employeesByDepartmentResult);
+  } else {
+    console.log('No employees found in this department.');
+  }
+  break;
+
+
+// VIEW TOTAL BUDGET FOR DEPARTMENT
+
     case 'View total utilized budget of a department':
       const budgetDepartmentId = await inquirer.prompt({
         type: 'input',

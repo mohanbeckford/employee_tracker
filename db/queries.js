@@ -62,7 +62,7 @@ async function addRole(title, salary, departmentId) {
 }
 
 // Function to add an employee
-async function addEmployee(firstName, lastName, roleId, managerId) {
+async function addEmployee(firstName, lastName, roleId, managerId = null) {
   try {
     const [result] = await db.execute(
       'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)',
@@ -103,6 +103,69 @@ async function updateEmployeeManager(employeeId, newManagerId) {
   }
 }
 
+async function deleteEmployee(employeeId) {
+  try {
+    const [result] = await db.execute('DELETE FROM employee WHERE id = ?', [employeeId]);
+    return result.affectedRows > 0;
+  } catch (error) {
+    console.error('Error deleting employee:', error);
+    throw error;
+  }
+}
+
+async function deleteDepartment(departmentId) {
+  try {
+    const [result] = await db.execute('DELETE FROM department WHERE id = ?', [departmentId]);
+    return result.affectedRows > 0;
+  } catch (error) {
+    console.error('Error deleting department:', error);
+    throw error;
+  }
+}
+
+async function deleteRole(roleId) {
+  try {
+    const [result] = await db.execute('DELETE FROM role WHERE id = ?', [roleId]);
+    return result.affectedRows > 0;
+  } catch (error) {
+    console.error('Error deleting role:', error);
+    throw error;
+  }
+}
+
+async function viewEmployeesByManager(managerId) {
+  try {
+    const [rows, fields] = await db.execute('SELECT * FROM employee WHERE manager_id = ?', [managerId]);
+    return rows;
+  } catch (error) {
+    console.error('Error querying employees by manager:', error);
+    throw error;
+  }
+}
+
+async function viewEmployeesByDepartment(departmentId) {
+  try {
+    const [rows, fields] = await db.execute('SELECT * FROM employee WHERE role_id IN (SELECT id FROM role WHERE department_id = ?)', [departmentId]);
+    return rows;
+  } catch (error) {
+    console.error('Error querying employees by department:', error);
+    throw error;
+  }
+}
+
+async function calculateTotalBudget(departmentId) {
+  try {
+    const [rows, fields] = await db.execute(
+      'SELECT SUM(salary) AS total_budget FROM role WHERE department_id = ?',
+      [departmentId]
+    );
+    return rows[0].total_budget;
+  } catch (error) {
+    console.error('Error calculating total budget:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   viewAllDepartments,
   viewAllRoles,
@@ -111,5 +174,11 @@ module.exports = {
   addRole,
   addEmployee,
   updateEmployeeRole,
-  updateEmployeeManager
+  updateEmployeeManager,
+  deleteEmployee,
+  deleteDepartment,
+  deleteRole,
+  viewEmployeesByManager,
+  viewEmployeesByDepartment,
+  calculateTotalBudget
 };
